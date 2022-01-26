@@ -1,0 +1,65 @@
+---
+title: "exercicio_if_else"
+author: "Gabriel Oliveira"
+date: "26/01/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Carregando as bibliotecas
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
+
+## Importanto os Dataset's
+Dataset's referentes ao tráfeco no site de marcas mundialmente conhecidas
+Disponíveis em https://www.kaggle.com/yamqwe/popular-website-traffic-eda/notebook
+```{r}
+social <- read_csv("C:/Users/Gbrie/Desktop/social.csv")
+search <- read_csv("C:/Users/Gbrie/Desktop/search.csv")
+News <- read_csv("C:/Users/Gbrie/Desktop/News.csv")
+Fast_Food <- read_csv("C:/Users/Gbrie/Desktop/Fast-Food.csv")
+```
+
+## Ajustando os Dataset's
+```{r}
+# Renomeando o nome da coluna Social Media
+social <- rename(social, "SocialMedia" = "Social Media")
+search <- rename(search, "SocialMedia" = "Source")
+News <- rename(News, "SocialMedia" = "Social Media")
+Fast_Food <- rename(Fast_Food, "SocialMedia" = "Social Media")
+
+# Retirando as linhas com NA em Fast_Food
+Fast_Food <- drop_na(Fast_Food, "SocialMedia")
+```
+
+## Agrupando os Dataset's
+```{r}
+WebsiteTraffic <- bind_rows(social, search, News, Fast_Food)
+```
+
+
+## Usando o if para ver quais sites tem mais de 1 bilhão de acesso
+```{r}
+# Descorbindo a quantidade de linhas que tem no dataframe
+count(WebsiteTraffic)
+
+# Mostrar quais empresas 
+for (i in 1:16) {
+  if (WebsiteTraffic[i,2] > 1000000000) {
+    print(WebsiteTraffic[i,1:2]) 
+  }
+}
+```
+
+
+
+
+
+
+
