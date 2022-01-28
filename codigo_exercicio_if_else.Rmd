@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 # Carregando as bibliotecas
 ```{r}
 library(readr)
@@ -15,18 +16,17 @@ library(dplyr)
 library(tidyr)
 ```
 
-
-## Importanto os Dataset's
+# Importanto os Dataset's
 Dataset's referentes ao tráfeco no site de marcas mundialmente conhecidas
 Disponíveis em https://www.kaggle.com/yamqwe/popular-website-traffic-eda/notebook
 ```{r}
-social <- read_csv("C:/Users/Gbrie/Desktop/social.csv")
-search <- read_csv("C:/Users/Gbrie/Desktop/search.csv")
-News <- read_csv("C:/Users/Gbrie/Desktop/News.csv")
-Fast_Food <- read_csv("C:/Users/Gbrie/Desktop/Fast-Food.csv")
+social <- read_csv("C:/Users/Gbrie/Workspace/exercicio_if_else/social.csv")
+search <- read_csv("C:/Users/Gbrie/Workspace/exercicio_if_else/search.csv")
+News <- read_csv("C:/Users/Gbrie/Workspace/exercicio_if_else/News.csv")
+Fast_Food <- read_csv("C:/Users/Gbrie/Workspace/exercicio_if_else/Fast-Food.csv")
 ```
 
-## Ajustando os Dataset's
+# Ajustando os Dataset's
 ```{r}
 # Renomeando o nome da coluna Social Media
 social <- rename(social, "SocialMedia" = "Social Media")
@@ -38,27 +38,69 @@ Fast_Food <- rename(Fast_Food, "SocialMedia" = "Social Media")
 Fast_Food <- drop_na(Fast_Food, "SocialMedia")
 ```
 
-## Agrupando os Dataset's
+# Agrupando os Dataset's
 ```{r}
 WebsiteTraffic <- bind_rows(social, search, News, Fast_Food)
 ```
 
-
-## Usando o if para ver quais sites tem mais de 1 bilhão de acesso
+# Realizando algumas manipulações para exemplo do uso do if e else
+## Usando o if para ver quais sites tem mais de 1 bilhão de acesso em um dia específico
 ```{r}
 # Descorbindo a quantidade de linhas que tem no dataframe
 count(WebsiteTraffic)
 
-# Mostrar quais empresas 
-for (i in 1:16) {
+# Mostrar quais empresas tem mais de 1 bilhão de acesso em cada dia
+for (i in 1:nrow(WebsiteTraffic)) {
   if (WebsiteTraffic[i,2] > 1000000000) {
     print(WebsiteTraffic[i,1:2]) 
   }
 }
 ```
 
+## Usando o if e o else para ver quais sites tem menos de 1 bilhão de acesso em um dia específico
+```{r}
+# Mostrar quais empresas tem mais de 1 bilhão de acesso em cada dia
+for (i in 1:nrow(WebsiteTraffic)) {
+  if (WebsiteTraffic[i,2] > 1000000000) {
+      } else {
+    print(WebsiteTraffic[i,1:2]) 
+  }
+}
+```
 
+## Usando o if e o else para ver quais sites tem mais ou menos de 1 bilhão de acesso em um dia específico e agrupando os resultados em um DataFrame
+```{r}
 
+WebsiteTrafficHighList <- list()
+WebsiteTrafficLowList <- list()
+                                          
+# Mostrar quais empresas tem mais de 1 bilhão de acesso em cada dia
+for (i in 1:nrow(WebsiteTraffic)) {
+  if (WebsiteTraffic[i,2] > 1000000000) {
+          WebsiteTrafficHighList[[i]] <- data.frame(SocialMedia = WebsiteTraffic[i,1], 
+                                                "11/1/2016" = WebsiteTraffic[i,2])
+      } else {
+    WebsiteTrafficLowList[[i]] <- data.frame(SocialMedia = WebsiteTraffic[i,1], 
+                                                "11/1/2016" = WebsiteTraffic[i,2])
+  }
+}
+
+WebsiteTrafficHigh <- do.call("rbind", WebsiteTrafficHighList)
+WebsiteTrafficLow <- do.call("rbind", WebsiteTrafficLowList)
+
+```
+
+## Usando o if e o else para ver quais sites tem menos de 1 bilhão de acesso em determinado dia
+```{r}
+for (n in 2:ncol(WebsiteTraffic)){
+  for (i in 1:nrow(WebsiteTraffic)) {
+    if (WebsiteTraffic[i,n] > 1000000000) {
+      } else {
+    print(WebsiteTraffic[i,c(1, n)]) 
+    }
+  }
+}
+```
 
 
 
