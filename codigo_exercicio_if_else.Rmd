@@ -90,17 +90,6 @@ WebsiteTrafficLow <- do.call("rbind", WebsiteTrafficLowList)
 
 ```
 
-## Usando o if e o else para ver quais sites tem menos de 1 bilhão de acesso em determinado dia
-```{r}
-for (n in 2:ncol(WebsiteTraffic)){
-  for (i in 1:nrow(WebsiteTraffic)) {
-    if (WebsiteTraffic[i,n] > 1000000000) {
-      } else {
-    print(WebsiteTraffic[i,c(1, n)]) 
-    }
-  }
-}
-```
 
 
 
